@@ -1,0 +1,10 @@
+# Ignore Everything
+.vscode/*
+
+
+# But not .cpp
+!*.cpp
+!*.h
+!json/*
+!.gitignore
+!README.md

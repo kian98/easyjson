@@ -3,9 +3,11 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "parser.h"
+
 using namespace easyjson;
 
-Json::Json() : m_type(json_bool) {}
+Json::Json() : m_type(json_null) {}
 
 Json::Json(bool value) : m_type(json_bool) { m_value.m_bool = value; }
 Json::Json(int value) : m_type(json_int) { m_value.m_int = value; }
@@ -251,7 +253,7 @@ std::string Json::str() const
         ss << "[";
         for (int i = 0; i < (m_value.m_array)->size(); i++) {
             if (i > 0) {
-                ss << ",";
+                ss << ", ";
             }
             ss << (m_value.m_array)->at(i).str();
         }
@@ -262,7 +264,7 @@ std::string Json::str() const
         for (auto it = (m_value.m_object)->begin();
              it != (m_value.m_object)->end(); it++) {
             if (it != (m_value.m_object)->begin()) {
-                ss << ",";
+                ss << ", ";
             }
             ss << "\"" << it->first << "\":" << it->second.str();
         }
@@ -345,4 +347,10 @@ void Json::remove(const std::string &key) {
         // 对于map，erase会返回0或1，表示是否成功删除
         (m_value.m_object)->erase(key);
     }
+}
+
+void Json::parse(const std::string &str) {
+    Parser P;
+    P.load(str);
+    *this = P.parse();
 }

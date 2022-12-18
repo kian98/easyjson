@@ -1,10 +1,13 @@
+#include <fstream>
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 #include "json.h"
+#include "parser.h"
 using namespace easyjson;
 
-int main() {
+void test_Json() {
     // // 构造函数，基本类型->Json
     // Json v1;
     // Json v2(true);
@@ -59,6 +62,35 @@ int main() {
     // 注意释放内存
     // 若对象中，某个key对应的值为数组，注意避免重复释放
     obj.clear();
+}
 
+void test_Parser() {
+    // 解析Json字符串
+    Json p;
+    // const std::string str = "[123, -123, \"test\", [3,4,5, true], false,
+    // null]";
+    const std::string str =
+        "{\"k1\": 123, \"k2\": \"hello\", \"k3\": [1,2,3,4,5]}";
+    p.parse(str);
+    cout << p.str() << endl;
+}
+
+void test_file() {
+    // read text from file
+    ifstream ifs("example.json");
+    stringstream ss;
+    ss << ifs.rdbuf();
+    const string &str = ss.str();
+    ifs.close();
+    cout << str.substr(0, 100) << endl;
+
+    // parse json
+    Json p;
+    p.parse(str);
+    cout << p.str() << endl;
+}
+
+int main() {
+    test_file();
     return 0;
 }

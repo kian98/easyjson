@@ -83,6 +83,8 @@ public:
     void remove(const char *key);
     void remove(const std::string &key);
 
+    void parse(const std::string &str);
+
 private:
     void copy(const Json &other);
 
